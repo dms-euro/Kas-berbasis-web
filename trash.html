@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Keuangan - Kas Karang Taruna</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #1abc9c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-heading {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(52, 152, 219, 0.9)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 40px 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .stats-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+
+        .card-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .card-success {
+            background: linear-gradient(135deg, var(--success), #27ae60);
+            color: white;
+        }
+
+        .card-danger {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            color: white;
+        }
+
+        .card-warning {
+            background: linear-gradient(135deg, var(--warning), #d35400);
+            color: white;
+        }
+
+        .card-info {
+            background: linear-gradient(135deg, var(--info), #16a085);
+            color: white;
+        }
+
+        .filter-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .finance-table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .finance-table thead {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .badge-pemasukan {
+            background-color: var(--success);
+        }
+
+        .badge-pengeluaran {
+            background-color: var(--danger);
+        }
+
+        .btn-action {
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .section-title {
+            border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+            margin: 25px 0 20px 0;
+            color: var(--dark);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        .export-buttons .btn {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-icon {
+                font-size: 2rem;
+            }
+
+            .display-4 {
+                font-size: 2.2rem;
+            }
+
+            .export-buttons .btn {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hands-helping me-2"></i>
+                <strong>Kas Karang Taruna</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-home me-1"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-exchange-alt me-1"></i> Transaksi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-users me-1"></i> Anggota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-chart-bar me-1"></i> Laporan</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Heading -->
+    <div class="page-heading">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold"><i class="fas fa-chart-line me-2"></i>Laporan Keuangan</h1>
+            <p class="lead">Analisis lengkap pemasukan, pengeluaran, dan performa keuangan karang taruna</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <label for="periodeAwal" class="form-label">Periode Awal</label>
+                    <input type="date" class="form-control" id="periodeAwal" value="2023-01-01">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="periodeAkhir" class="form-label">Periode Akhir</label>
+                    <input type="date" class="form-control" id="periodeAkhir" value="2023-11-30">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="jenisLaporan" class="form-label">Jenis Laporan</label>
+                    <select class="form-select" id="jenisLaporan">
+                        <option selected>Semua Transaksi</option>
+                        <option>Pemasukan Saja</option>
+                        <option>Pengeluaran Saja</option>
+                        <option>Rekap Bulanan</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end mb-2">
+                    <button class="btn btn-primary w-100"><i class="fas fa-filter me-1"></i> Terapkan Filter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card dashboard-card card-primary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title">TOTAL PEMASUKAN</h6>
+                                <h2 class="fw-bold">Rp 12.450.000</h2>
+                            </div>
+                            <div class="stats-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                        </div>
+                        <p class="small mt-3 mb-0"><i class="fas fa-calendar me-1"></i> Jan - Nov 2023</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card dashboard-card card-danger">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title">TOTAL PENGELUARAN</h6>
+                                <h2 class="fw-bold">Rp 9.870.500</h2>
+                            </div>
+                            <div class="stats-icon">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                        </div>
+                        <p class="small mt-3 mb-0"><i class="fas fa-calendar me-1"></i> Jan - Nov 2023</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card dashboard-card card-success">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title">SALDO BERSIH</h6>
+                                <h2 class="fw-bold">Rp 2.579.500</h2>
+                            </div>
+                            <div class="stats-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                        </div>
+                        <p class="small mt-3 mb-0"><i class="fas fa-info-circle me-1"></i> Update terakhir: 30 Nov 2023</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card dashboard-card card-info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title">RATA-RATA/BULAN</h6>
+                                <h2 class="fw-bold">Rp 1.131.773</h2>
+                            </div>
+                            <div class="stats-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                        </div>
+                        <p class="small mt-3 mb-0"><i class="fas fa-arrow-up me-1"></i> 15% dari tahun lalu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="d-flex justify-content-between mb-4">
+            <h3 class="section-title">Laporan Keuangan</h3>
+            <div class="export-buttons">
+                <button class="btn btn-success"><i class="fas fa-file-excel me-1"></i> Excel</button>
+                <button class="btn btn-danger"><i class="fas fa-file-pdf me-1"></i> PDF</button>
+                <button class="btn btn-primary"><i class="fas fa-print me-1"></i> Cetak</button>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="chart-container">
+                    <h4 class="section-title">Grafik Cash Flow 2023</h4>
+                    <canvas id="cashFlowChart" height="300"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="chart-container">
+                    <h4 class="section-title">Distribusi Pengeluaran</h4>
+                    <canvas id="expenseChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Detail Transaksi (Jan - Nov 2023)</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover finance-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Keterangan</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">User</th>
+                                <th scope="col" class="text-center">Jenis</th>
+                                <th scope="col" class="text-end">Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Iuran Bulanan Januari</td>
+                                <td>05 Jan 2023</td>
+                                <td>ahmad</td>
+                                <td class="text-center"><span class="badge bg-success">Pemasukan</span></td>
+                                <td class="text-end text-success fw-bold">Rp 1.250.000</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Dana Kegiatan Bakti Sosial</td>
+                                <td>12 Jan 2023</td>
+                                <td>budi</td>
+                                <td class="text-center"><span class="badge bg-danger">Pengeluaran</span></td>
+                                <td class="text-end text-danger fw-bold">Rp 750.000</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Sumbangan dari Donatur</td>
+                                <td>20 Jan 2023</td>
+                                <td>dewi</td>
+                                <td class="text-center"><span class="badge bg-success">Pemasukan</span></td>
+                                <td class="text-end text-success fw-bold">Rp 500.000</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Pembelian Perlengkapan</td>
+                                <td>25 Jan 2023</td>
+                                <td>rina</td>
+                                <td class="text-center"><span class="badge bg-danger">Pengeluaran</span></td>
+                                <td class="text-end text-danger fw-bold">Rp 350.000</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>Iuran Bulanan Februari</td>
+                                <td>03 Feb 2023</td>
+                                <td>sari</td>
+                                <td class="text-center"><span class="badge bg-success">Pemasukan</span></td>
+                                <td class="text-end text-success fw-bold">Rp 1.150.000</td>
+                            </tr>
+                            <tr class="fw-bold">
+                                <td colspan="5" class="text-end">Total Pemasukan</td>
+                                <td class="text-end text-success">Rp 12.450.000</td>
+                            </tr>
+                            <tr class="fw-bold">
+                                <td colspan="5" class="text-end">Total Pengeluaran</td>
+                                <td class="text-end text-danger">Rp 9.870.500</td>
+                            </tr>
+                            <tr class="fw-bold table-active">
+                                <td colspan="5" class="text-end">Saldo Bersih</td>
+                                <td class="text-end">Rp 2.579.500</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation example" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Monthly Recap -->
+        <h3 class="section-title mt-5">Rekap Bulanan 2023</h3>
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Bulan</th>
+                                <th class="text-end">Pemasukan</th>
+                                <th class="text-end">Pengeluaran</th>
+                                <th class="text-end">Saldo</th>
+                                <th class="text-center">Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Januari</td>
+                                <td class="text-end text-success">Rp 1.750.000</td>
+                                <td class="text-end text-danger">Rp 1.100.000</td>
+                                <td class="text-end fw-bold">Rp 650.000</td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 70%"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 30%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Februari</td>
+                                <td class="text-end text-success">Rp 1.150.000</td>
+                                <td class="text-end text-danger">Rp 850.000</td>
+                                <td class="text-end fw-bold">Rp 300.000</td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 57%"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 43%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Maret</td>
+                                <td class="text-end text-success">Rp 1.200.000</td>
+                                <td class="text-end text-danger">Rp 950.000</td>
+                                <td class="text-end fw-bold">Rp 250.000</td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 56%"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 44%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>April</td>
+                                <td class="text-end text-success">Rp 950.000</td>
+                                <td class="text-end text-danger">Rp 700.000</td>
+                                <td class="text-end fw-bold">Rp 250.000</td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 58%"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 42%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mei</td>
+                                <td class="text-end text-success">Rp 1.050.000</td>
+                                <td class="text-end text-danger">Rp 800.000</td>
+                                <td class="text-end fw-bold">Rp 250.000</td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 57%"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 43%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="fw-bold table-active">
+                                <td>Total</td>
+                                <td class="text-end text-success">Rp 12.450.000</td>
+                                <td class="text-end text-danger">Rp 9.870.500</td>
+                                <td class="text-end">Rp 2.579.500</td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 56%"></div>
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 44%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">© 2023 Sistem Kas Karang Taruna. All rights reserved.</p>
+            <p class="small mb-0">Dibuat dengan <i class="fas fa-heart text-danger"></i> untuk Karang Taruna</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cash Flow Chart
+            const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
+            const cashFlowChart = new Chart(cashFlowCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov'],
+                    datasets: [
+                        {
+                            label: 'Pemasukan',
+                            data: [1750, 1150, 1200, 950, 1050, 1250, 1100, 950, 1000, 1200, 850],
+                            backgroundColor: '#2ecc71',
+                            borderColor: '#27ae60',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Pengeluaran',
+                            data: [1100, 850, 950, 700, 800, 900, 950, 750, 800, 950, 725],
+                            backgroundColor: '#e74c3c',
+                            borderColor: '#c0392b',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rp ' + value + '.000';
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Cash Flow 2023 (dalam ribuan)'
+                        }
+                    }
+                }
+            });
+
+            // Expense Distribution Chart
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            const expenseChart = new Chart(expenseCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Kegiatan', 'Perlengkapan', 'Operasional', 'Lain-lain'],
+                    datasets: [{
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            '#3498db',
+                            '#2ecc71',
+                            '#e74c3c',
+                            '#f39c12'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Persentase Pengeluaran'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

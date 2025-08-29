@@ -10,12 +10,48 @@
         </a>
     </header>
 
+    <div class="modal fade text-left" id="success" tabindex="-1" aria-labelledby="myModalLabel110" style="display: none;" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-success">
+                                                        <h5 class="modal-title white" id="myModalLabel110">Success Modal
+                                                        </h5>
+                                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Tart lemon drops macaroon oat cake chocolate toffee chocolate
+                                                        bar icing. Pudding jelly beans
+                                                        carrot cake pastry gummies cheesecake lollipop. I love cookie
+                                                        lollipop cake I love sweet
+                                                        gummi
+                                                        bears cupcake dessert.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                            <span class="d-none d-sm-block">Close</span>
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-success ms-1" data-bs-dismiss="modal">
+                                                            <i class="bx bx-check d-block d-sm-none"></i>
+                                                            <span class="d-none d-sm-block">Accept</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
     <div class="page-heading">
-        <h3>Profile Statistics</h3>
+        <h1 class="mb-2 me-4 text-primary"><i class="bi bi-wallet2 me-2"></i>Sistem Kas Keuangan</h1>
+        <h3 class="fw-bold">Manajemen Keuangan</h3>
+        <p class="text-muted">Kelola pembayaran kas anggota dengan mudah</p>
     </div>
     <div class="page-content">
+        
         <section class="row">
-            <div class="card">
+            <div class="card border-0">
                 <div class="row">
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
@@ -40,7 +76,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon purple">
-                                            <i class="iconly-boldShow"></i>
+                                            <i class="iconly-boldUpload"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -57,7 +93,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon green">
-                                            <i class="iconly-boldAdd-User"></i>
+                                            <i class='iconly-boldDownload'></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -74,7 +110,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon red">
-                                            <i class="iconly-boldBookmark"></i>
+                                            <i class='iconly-boldWallet'></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8">

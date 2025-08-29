@@ -16,7 +16,7 @@ class KeuanganController extends Controller
     }
 
     public function create() {
-        return view('keuangan.tambah');
+        return view('keuangan.transaksi');
     }
 
     /**

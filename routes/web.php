@@ -6,8 +6,9 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index'])->name('login.index');
+Route::get('/login', [LoginController::class, 'create'])->name('login.create');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
-Route::post('/logout', [LoginController::class, 'destroy'])->name('login.destroy');
+Route::get('/logout', [LoginController::class, 'logout'])->name('login.logout');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
 Route::get('/keuangan/create', [KeuanganController::class, 'create'])->name('keuangan.create');

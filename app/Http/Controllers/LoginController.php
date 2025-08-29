@@ -20,7 +20,13 @@ class LoginController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.anggota');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return view('auth.login');
     }
 
     /**
