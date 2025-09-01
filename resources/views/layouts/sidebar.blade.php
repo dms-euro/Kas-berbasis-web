@@ -1,11 +1,8 @@
 <div class="sidebar-wrapper active">
     <div class="sidebar-header">
         <div class="d-flex justify-content-between">
-            <div class="logo">
-                <h1>KASS</h1>
-            </div>
-            <div class="toggler">
-                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+            <div class="logo w-100 d-flex justify-content-center">
+              <img src="{{ asset('assets/images/logo/RagilKuning.png') }}" alt="Ragilkuning" style="max-width: 120px; height: auto;">
             </div>
         </div>
     </div>
@@ -27,20 +24,20 @@
                 </a>
                 <ul class="submenu ">
                     <li class="submenu-item {{ $active == 'kas' ? 'active' : '' }} ">
-                        <a href="{{ route('keuangan.index') }}" class="sidebar-link">
+                        <a href="{{ route('kas.index') }}" class="sidebar-link">
                             <i class="iconly-boldSwap"></i>
                             <span>Rekap Kas</span>
                         </a>
                     </li>
                     <li class="submenu-item {{ $active == 'transaksi' ? 'active' : '' }}  ">
-                        <a href="{{ route('keuangan.create') }}" class="sidebar-link">
+                        <a href="{{ route('keuangan.index') }}" class="sidebar-link">
                             <i class="iconly-boldActivity"></i>
                             <span>Transaksi</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="sidebar-item  ">
+            <li class="sidebar-item {{ ($active ?? '') == 'user' ? 'active' : '' }} ">
                 <a href="{{ route('login.create') }}" class='sidebar-link'>
                     <i class="bi bi-people-fill"></i>
                     <span>Anggota</span>

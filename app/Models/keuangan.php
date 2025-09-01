@@ -11,5 +11,6 @@ class keuangan extends Model
         'tanggal',
         'username',
         'jenis',
+        'nominal',
     ];
 }

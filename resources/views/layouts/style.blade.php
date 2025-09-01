@@ -13,6 +13,10 @@
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        #pembatas {
+            background-color:#ffffff84;
+            box-shadow: none;
+        }
 
         /* Header Styles */
         .app-header {
@@ -69,6 +73,13 @@
         .badge-pending {
             background-color: rgba(255, 193, 7, 0.2);
             color: #ffc107;
+            padding: 0.5rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .badge-failed {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ff0707;
             padding: 0.5rem 0.8rem;
             border-radius: 20px;
             font-weight: 500;

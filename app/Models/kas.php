@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class kas extends Model
 {
     protected $fillable =[
-        'nama_anggota',
+        'nama',
         'tanggal',
         'status_bayar',
-        'petugas',
+        'petugas',  
     ];
 }

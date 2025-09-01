@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return view('auth.login');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('auth.anggota');
+        $users = User::all();
+
+        return view('auth.anggota', compact('users'));
     }
 
     public function logout()
@@ -29,9 +28,25 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function tambahuser(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+            'nama'     => 'required',
+            'level'    => 'required',
+        ]);
+
+        User::create([
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'nama'     => $request->nama,
+            'level'    => $request->level,
+        ]);
+
+        return redirect()->back()->with('success', 'User berhasil ditambahkan!');
+    }
+
     public function store(Request $request)
     {
         $cek = $request->validate([
@@ -39,45 +54,23 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if(Auth::attempt($cek)){
+        if (Auth::attempt($cek)) {
             $request->session()->regenerate();
             return redirect()->route('dashboard.index');
         }
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Berhasil Logout');
+        $user = User::findOrFail($request->id);
+        $user->delete();
+
+        return redirect()->back()->with('success', 'User berhasil dihapus!');
     }
 }

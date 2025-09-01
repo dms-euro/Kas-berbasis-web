@@ -12,11 +12,12 @@ class KeuanganController extends Controller
      */
     public function index()
     {
-        return view('keuangan.index');
+        $keuangan = keuangan::paginate(10);
+        return view('keuangan.transaksi', compact('keuangan'));
     }
 
     public function create() {
-        return view('keuangan.transaksi');
+        //
     }
 
     /**
@@ -31,8 +32,8 @@ class KeuanganController extends Controller
             'jenis'=> 'required',
             'nominal'=> 'required',
         ]);
-        $transaksi = keuangan::create($request->all());
-        return response()->json($transaksi,201);
+        keuangan::create($request->all());
+        return redirect()->back()->with('success', 'Transaksi berhasil ditambahkan!');
     }
 
     /**
@@ -40,8 +41,7 @@ class KeuanganController extends Controller
      */
     public function show(string $id)
     {
-        $transaksi = keuangan::findOrFail($id);
-        return response()->json($transaksi);
+        //
     }
 
     /**
@@ -49,18 +49,7 @@ class KeuanganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $transaksi = keuangan::findOrFail($id);
-
-        $request([
-            'keterangan' => 'required',
-            'tanggal'=> 'required',
-            'username'=> 'required',
-            'jenis'=> 'required',
-            'nominal'=> 'required',
-        ]);
-
-        $transaksi->update($request->all());
-        return response()->json($transaksi);
+        //
     }
 
     /**
@@ -70,6 +59,7 @@ class KeuanganController extends Controller
     {
         $transaksi = Keuangan::findOrFail($id);
         $transaksi-> delete();
-        return response()->json(null,204);
+        return redirect()->back()->with('success', 'Transaksi berhasil dihapus!');
     }
+
 }

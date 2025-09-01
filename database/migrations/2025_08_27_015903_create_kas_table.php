@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('kas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_anggota');
+            $table->string('nama');
             $table->date('tanggal');
-            $table->string('status_bayar');
+            $table->enum('status_bayar',['Lunas','Belum bayar']);
             $table->string('petugas');
             $table->timestamps();
         });

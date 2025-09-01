@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\kas;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class KasController extends Controller
@@ -12,7 +13,9 @@ class KasController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        $kas = kas::paginate(10);
+        return view('keuangan.index', compact('kas','users'));
     }
 
     /**
@@ -28,7 +31,21 @@ class KasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'tanggal' => 'required',
+            'status_bayar' => 'required',
+            'petugas' => 'required',
+        ]);
+
+        kas::create([
+            'nama' => $request->nama,
+            'tanggal' => $request->tanggal,
+            'status_bayar' => $request->status_bayar,
+            'petugas' => $request->petugas,
+        ]);
+
+        return redirect()->back()->with('success', 'Kas berhasil ditambahkan.');
     }
 
     /**

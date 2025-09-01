@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Anggota</h6>
-                            <h6 class="font-extrabold mb-0">100</h6>
+                            <h6 class="font-extrabold mb-0">{{ \App\Models\User::count() }}</h6>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,10 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Pemasukan</h6>
-                            <h6 class="font-extrabold mb-0">112.000</h6>
+                            <h6 class="font-extrabold mb-0">
+                                Rp
+                                {{ number_format(\App\Models\Keuangan::where('jenis', 'pemasukan')->sum('nominal'), 0, ',', '.') }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -55,8 +58,11 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <h6 class="text-muted font-semibold">Pengluaran</h6>
-                            <h6 class="font-extrabold mb-0">80.000</h6>
+                            <h6 class="text-muted font-semibold">Pengeluaran</h6>
+                            <h6 class="font-extrabold mb-0">
+                                Rp
+                                {{ number_format(\App\Models\Keuangan::where('jenis', 'pengeluaran')->sum('nominal'), 0, ',', '.') }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -73,7 +79,16 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Saldo</h6>
-                            <h6 class="font-extrabold mb-0">112.000.000</h6>
+                            <h6 class="font-extrabold mb-0">
+                                Rp
+                                {{ number_format(
+                                    \App\Models\Keuangan::where('jenis', 'pemasukan')->sum('nominal') -
+                                        \App\Models\Keuangan::where('jenis', 'pengeluaran')->sum('nominal'),
+                                    0,
+                                    ',',
+                                    '.',
+                                ) }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -81,165 +96,127 @@
         </div>
     </div>
 
-    <!-- Action Buttons -->
     <div class="d-flex justify-content-between mb-4">
         <h3 class="section-title">Daftar Transaksi</h3>
-        <div>
-            <button class="btn btn-success me-2"><i class="fas fa-plus-circle me-1"></i> Tambah Transaksi</button>
-            <button class="btn btn-outline-primary"><i class="fas fa-download me-1"></i> Export</button>
-        </div>
     </div>
-    <div class="card dashboard-card">
-        <div class="card-body">
+    <div class="card dashboard-card mb-3">
+        <div class="d-flex justify-content-end m-3">
+            <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#transaksiModal">
+                <i class="fas fa-plus-circle me-1"></i> Tambah Transaksi
+            </button>
+        </div>
+        <div class="card-body mt-0">
             <div class="table-responsive">
-                <table class="table table-hover finance-table">
+                <table class="table table-hover finance-table text-center">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Keterangan</th>
                             <th scope="col">Tanggal</th>
                             <th scope="col">Username</th>
-                            <th scope="col" class="text-center">Jenis</th>
-                            <th scope="col" class="text-end">Jumlah</th>
-                            <th scope="col" class="text-center">Aksi</th>
+                            <th scope="col">Jenis</th>
+                            <th scope="col">Nominal</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Iuran Bulanan November</td>
-                            <td>05 Nov 2023</td>
-                            <td>ahmad</td>
-                            <td class="text-center"><span class="badge badge-pemasukan">Pemasukan</span></td>
-                            <td class="text-end text-success fw-bold">Rp 250.000</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary btn-action me-1"><i
-                                        class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-danger btn-action"><i
-                                        class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Dana Kegiatan Bakti Sosial</td>
-                            <td>07 Nov 2023</td>
-                            <td>budi</td>
-                            <td class="text-center"><span class="badge badge-pengeluaran">Pengeluaran</span></td>
-                            <td class="text-end text-danger fw-bold">Rp 750.000</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary btn-action me-1"><i
-                                        class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-danger btn-action"><i
-                                        class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Sumbangan dari Donatur</td>
-                            <td>10 Nov 2023</td>
-                            <td>dewi</td>
-                            <td class="text-center"><span class="badge badge-pemasukan">Pemasukan</span></td>
-                            <td class="text-end text-success fw-bold">Rp 500.000</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary btn-action me-1"><i
-                                        class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-danger btn-action"><i
-                                        class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>Pembelian Perlengkapan</td>
-                            <td>12 Nov 2023</td>
-                            <td>rina</td>
-                            <td class="text-center"><span class="badge badge-pengeluaran">Pengeluaran</span></td>
-                            <td class="text-end text-danger fw-bold">Rp 350.000</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary btn-action me-1"><i
-                                        class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-danger btn-action"><i
-                                        class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>Iuran Bulanan November</td>
-                            <td>15 Nov 2023</td>
-                            <td>sari</td>
-                            <td class="text-center"><span class="badge badge-pemasukan">Pemasukan</span></td>
-                            <td class="text-end text-success fw-bold">Rp 200.000</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary btn-action me-1"><i
-                                        class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-danger btn-action"><i
-                                        class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        @foreach ($keuangan as $index => $transaksi)
+                            <tr>
+                                <th>{{ $keuangan->firstItem() + $index }}</th>
+                                <td>{{ $transaksi->keterangan }}</td>
+                                <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d M Y') }}</td>
+                                <td>{{ $transaksi->username }}</td>
+                                <td>
+                                    @if ($transaksi->jenis == 'pemasukan')
+                                        <span class="badge-paid ms-2"><i
+                                                class="bi bi-check-circle me-1"></i>Pemasukan</span>
+                                    @else
+                                        <span class="badge-failed ms-2"><i
+                                                class="bi bi-x-circle me-1"></i>Pengeluaran</span>
+                                    @endif
+                                </td>
+                                <td>Rp {{ number_format($transaksi->nominal, 0, ',', '.') }}</td>
+                                <td>
+                                    <form action="{{ route('keuangan.destroy', $transaksi->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger btn-action"
+                                            onclick="return confirm('Yakin ingin menghapus?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination -->
-            <nav aria-label="Page navigation example" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            @if ($keuangan->lastPage() > 1)
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-primary justify-content-center mt-3">
+                        <li class="page-item {{ $keuangan->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $keuangan->previousPageUrl() }}">Prev</a>
+                        </li>
+
+                        @for ($i = 1; $i <= $keuangan->lastPage(); $i++)
+                            <li class="page-item {{ $keuangan->currentPage() == $i ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $keuangan->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+
+                        <li class="page-item {{ !$keuangan->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $keuangan->nextPageUrl() }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            @endif
         </div>
     </div>
-    <div class="col-md-6 mb-4">
-                <div class="card dashboard-card">
-                    <div class="card-header bg-transparent">
-                        <h5 class="card-title mb-0"><i class="fas fa-table me-2"></i>Rekap per Bulan</h5>
+
+    <!-- Modal -->
+    <div class="modal fade" id="transaksiModal" tabindex="-1" aria-labelledby="transaksiModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('keuangan.store') }}">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="transaksiModalLabel">Tambah Transaksi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Bulan</th>
-                                        <th class="text-end">Pemasukan</th>
-                                        <th class="text-end">Pengeluaran</th>
-                                        <th class="text-end">Saldo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>November 2023</td>
-                                        <td class="text-end text-success">Rp 8.250.000</td>
-                                        <td class="text-end text-danger">Rp 5.870.500</td>
-                                        <td class="text-end fw-bold">Rp 2.379.500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Oktober 2023</td>
-                                        <td class="text-end text-success">Rp 7.350.000</td>
-                                        <td class="text-end text-danger">Rp 5.420.000</td>
-                                        <td class="text-end fw-bold">Rp 1.930.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>September 2023</td>
-                                        <td class="text-end text-success">Rp 6.800.000</td>
-                                        <td class="text-end text-danger">Rp 4.950.000</td>
-                                        <td class="text-end fw-bold">Rp 1.850.000</td>
-                                    </tr>
-                                    <tr class="fw-bold">
-                                        <td>Total</td>
-                                        <td class="text-end text-success">Rp 22.400.000</td>
-                                        <td class="text-end text-danger">Rp 16.240.500</td>
-                                        <td class="text-end">Rp 6.159.500</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="keterangan" class="form-label">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="keterangan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tanggal" class="form-label">Tanggal</label>
+                            <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jenis" class="form-label">Jenis</label>
+                            <select class="form-select" id="jenis" name="jenis" required>
+                                <option value="pemasukan">Pemasukan</option>
+                                <option value="pengeluaran">Pengeluaran</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nominal" class="form-label">Nominal</label>
+                            <input type="number" class="form-control" id="nominal" name="nominal" required>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
 @endsection

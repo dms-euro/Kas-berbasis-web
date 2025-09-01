@@ -22,5 +22,11 @@ class DatabaseSeeder extends Seeder
             'nama'     => 'Administrator',
             'level'    => 'admin',
         ]);
+        User::create([
+            'username' => 'user',
+            'password' => Hash::make('user123'),
+            'nama'     => 'User Biasa',
+            'level'    => 'user',
+        ]);
     }
 }
