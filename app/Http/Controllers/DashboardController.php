@@ -14,7 +14,7 @@ class DashboardController extends Controller
         return view('dashboard');
     }
 
-    /**
+   /**
      * Show the form for creating a new resource.
      */
     public function create()

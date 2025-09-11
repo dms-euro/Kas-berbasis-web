@@ -12,15 +12,13 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="card-title mb-0">Daftar User/Anngota</h5>
-                @auth
-                    @if(auth()->user()->level === 'admin')
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModalCenter">
-                            <i class="iconly-boldUser"></i>
-                            Tambah Anggota
-                        </button>
-                    @endif
-                @endauth
+                @if (auth()->user()->level === 'admin')
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalCenter">
+                        <i class="iconly-boldUser"></i>
+                        Tambah Anggota
+                    </button>
+                @endif
             </div>
             <div class="card">
                 <div class="card-header bg-primary text-white">
@@ -34,7 +32,9 @@
                                 <th>Username</th>
                                 <th>Nama</th>
                                 <th>Level</th>
-                                <th style="width: 120px;">Aksi</th>
+                                @if (auth()->user()->level === 'admin')
+                                    <th style="width: 120px;">Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -48,15 +48,19 @@
                                             {{ ucfirst($user->level) }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Yakin hapus user ini?')">
-                                                <i class="iconly-boldDelete"></i> Hapus
-                                            </button>
-                                        </form>
-                                    </td>
+                                    @if (auth()->user()->level === 'admin')
+                                        <td>
+                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                    onclick="return confirm('Yakin hapus user ini?')">
+                                                    <i class="iconly-boldDelete"></i> Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>
@@ -104,11 +108,11 @@
                             </select>
                         </div>
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
-                    </button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
-                        </form>
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                    </form>
                 </div>
             </div>
         </div>

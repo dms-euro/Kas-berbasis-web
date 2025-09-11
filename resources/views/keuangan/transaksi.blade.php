@@ -101,9 +101,11 @@
     </div>
     <div class="card dashboard-card mb-3">
         <div class="d-flex justify-content-end m-3">
-            <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#transaksiModal">
-                <i class="fas fa-plus-circle me-1"></i> Tambah Transaksi
-            </button>
+            @if (auth()->user()->level === 'admin')
+                <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#transaksiModal">
+                    <i class="fas fa-plus-circle me-1"></i> Tambah Transaksi
+                </button>
+            @endif
         </div>
         <div class="card-body mt-0">
             <div class="table-responsive">
@@ -116,7 +118,9 @@
                             <th scope="col">Username</th>
                             <th scope="col">Jenis</th>
                             <th scope="col">Nominal</th>
-                            <th scope="col">Aksi</th>
+                            @if (auth()->user()->level === 'admin')
+                                <th scope="col">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -136,17 +140,19 @@
                                     @endif
                                 </td>
                                 <td>Rp {{ number_format($transaksi->nominal, 0, ',', '.') }}</td>
-                                <td>
-                                    <form action="{{ route('keuangan.destroy', $transaksi->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger btn-action"
-                                            onclick="return confirm('Yakin ingin menghapus?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
+                                @if (auth()->user()->level === 'admin')
+                                    <td>
+                                        <form action="{{ route('keuangan.destroy', $transaksi->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger btn-action"
+                                                onclick="return confirm('Yakin ingin menghapus?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

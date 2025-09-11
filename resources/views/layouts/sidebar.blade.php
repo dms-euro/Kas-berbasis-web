@@ -2,7 +2,8 @@
     <div class="sidebar-header">
         <div class="d-flex justify-content-between">
             <div class="logo w-100 d-flex justify-content-center">
-              <img src="{{ asset('assets/images/logo/RagilKuning.png') }}" alt="Ragilkuning" style="max-width: 120px; height: auto;">
+                <img src="{{ asset('assets/images/logo/RagilKuning.png') }}" alt="Ragilkuning"
+                    style="max-width: 120px; height: auto;">
             </div>
         </div>
     </div>
@@ -37,12 +38,14 @@
                     </li>
                 </ul>
             </li>
-            <li class="sidebar-item {{ ($active ?? '') == 'user' ? 'active' : '' }} ">
-                <a href="{{ route('login.create') }}" class='sidebar-link'>
-                    <i class="bi bi-people-fill"></i>
-                    <span>Anggota</span>
-                </a>
-            </li>
+            @if (auth()->user()->level === 'admin')
+                <li class="sidebar-item {{ ($active ?? '') == 'user' ? 'active' : '' }} ">
+                    <a href="{{ route('login.create') }}" class='sidebar-link'>
+                        <i class="bi bi-people-fill"></i>
+                        <span>Anggota</span>
+                    </a>
+                </li>
+            @endif
             <li class="sidebar-item  ">
                 <a href="{{ route('login.logout') }}" class='sidebar-link'>
                     <i class="bi-box-arrow-left"></i>
