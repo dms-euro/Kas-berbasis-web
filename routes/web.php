@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index'])->name('login.index');
 Route::get('/login', [LoginController::class, 'create'])->name('login.create');
-Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::post('/login', [LoginController::class, 'store'])->name('login');
 
 Route::post('/users', [LoginController::class, 'tambahuser'])->name('users.store');
 Route::delete('/users/{id}', [LoginController::class, 'destroy'])->name('user.destroy');
@@ -21,6 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
     Route::post('/keuangan', [KeuanganController::class, 'store'])->name('keuangan.store');
     Route::delete('/keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
+    Route::get('/keuangan/export/pdf', [KeuanganController::class, 'exportPdf'])->name('keuangan.export.pdf');
 
     Route::get('/kas', [KasController::class, 'index'])->name('kas.index');
     Route::post('/kas', [KasController::class, 'store'])->name('kas.store');

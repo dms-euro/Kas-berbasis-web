@@ -43,75 +43,77 @@
             </div>
         </div>
     </form>
-        <div class="card dashboard-card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="card-title mb-0">Daftar Pembayaran Kas</h5>
-                    @if (auth()->user()->level === 'admin')
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKasModal">
-                            <i class="bi bi-plus-circle me-1"></i> Tambah Pembayaran
-                        </button>
-                    @endif
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover finance-table text-center">
-                        <thead>
+    <div class="card dashboard-card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title mb-0">Daftar Pembayaran Kas</h5>
+                @if (auth()->user()->level === 'admin')
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahKasModal">
+                        <i class="bi bi-plus-circle me-1"></i> Tambah Pembayaran
+                    </button>
+                @endif
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover finance-table text-center">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Anggota</th>
+                            <th>Tanggal</th>
+                            <th>Status Bayar</th>
+                            <th>Petugas</th>
+                            @if (auth()->user()->level === 'admin')
+                                <th>Aksi</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($kas as $index => $pembayaran)
                             <tr>
-                                <th>#</th>
-                                <th>Nama Anggota</th>
-                                <th>Tanggal</th>
-                                <th>Status Bayar</th>
-                                <th>Petugas</th>
+                                <th>{{ $kas->firstItem() + $index }}</th>
+                                <td>{{ $pembayaran->nama }}</td>
+                                <td>{{ \Carbon\Carbon::parse($pembayaran->tanggal)->format('d M Y') }}</td>
+                                <td>
+                                    @if (strtolower($pembayaran->status_bayar) == 'lunas')
+                                        <span class="badge-paid ms-2"><i class="bi bi-check-circle me-1"></i>Lunas</span>
+                                    @else
+                                        <span class="badge-pending ms-2"><i class="bi bi-clock me-1"></i>Belum bayar</span>
+                                    @endif
+                                </td>
+                                <td>{{ $pembayaran->petugas }}</td>
                                 @if (auth()->user()->level === 'admin')
-                                    <th>Aksi</th>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary btn-action me-1"
+                                            data-bs-toggle="modal" data-bs-target="#editKasModal-{{ $pembayaran->id }}">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <form id="delete-form-{{ $pembayaran->id }}"
+                                            action="{{ route('kas.destroy', $pembayaran->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" onclick="confirmDelete({{ $pembayaran->id }})"
+                                                class="btn btn-sm btn-outline-danger btn-action">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+
+                                    </td>
                                 @endif
                             </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($kas as $index => $pembayaran)
-                                <tr>
-                                    <th>{{ $kas->firstItem() + $index }}</th>
-                                    <td>{{ $pembayaran->nama }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($pembayaran->tanggal)->format('d M Y') }}</td>
-                                    <td>
-                                        @if (strtolower($pembayaran->status_bayar) == 'lunas')
-                                            <span class="badge-paid ms-2"><i class="bi bi-check-circle me-1"></i>Lunas</span>
-                                        @else
-                                            <span class="badge-pending ms-2"><i class="bi bi-clock me-1"></i>Belum bayar</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $pembayaran->petugas }}</td>
-                                    @if (auth()->user()->level === 'admin')
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary btn-action me-1"
-                                                data-bs-toggle="modal" data-bs-target="#editKasModal-{{ $pembayaran->id }}">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <form action="{{ route('kas.destroy', $pembayaran->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" onclick="return confirm('Yakin hapus data ini?')"
-                                                    class="btn btn-sm btn-outline-danger btn-action">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    @endif
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center">Tidak ada data pembayaran.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                <nav aria-label="Page navigation">
-                    {{ $kas->withQueryString()->links('pagination::bootstrap-5') }}
-                </nav>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Tidak ada data pembayaran.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
+            <nav aria-label="Page navigation">
+                {{ $kas->withQueryString()->links('pagination::bootstrap-5') }}
+            </nav>
         </div>
+    </div>
     <!-- Modal Tambah -->
     <div class="modal fade" id="tambahKasModal" tabindex="-1" aria-labelledby="tambahKasModalLabel" aria-hidden="true">
         <div class="modal-dialog">

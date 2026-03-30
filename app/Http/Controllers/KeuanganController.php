@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\keuangan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class KeuanganController extends Controller
@@ -16,8 +17,14 @@ class KeuanganController extends Controller
         return view('keuangan.transaksi', compact('keuangan'));
     }
 
-    public function create() {
-        //
+    public function exportPdf()
+    {
+        $keuangan = Keuangan::all();
+
+        $pdf = Pdf::loadView('keuangan.export-pdf', compact('keuangan'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('laporan-transaksi-kas.pdf');
     }
 
     /**
@@ -27,10 +34,10 @@ class KeuanganController extends Controller
     {
         $request->validate([
             'keterangan' => 'required',
-            'tanggal'=> 'required',
-            'username'=> 'required',
-            'jenis'=> 'required',
-            'nominal'=> 'required',
+            'tanggal' => 'required',
+            'username' => 'required',
+            'jenis' => 'required',
+            'nominal' => 'required',
         ]);
         keuangan::create($request->all());
         return redirect()->back()->with('success', 'Transaksi berhasil ditambahkan!');
@@ -58,8 +65,7 @@ class KeuanganController extends Controller
     public function destroy(string $id)
     {
         $transaksi = Keuangan::findOrFail($id);
-        $transaksi-> delete();
+        $transaksi->delete();
         return redirect()->back()->with('success', 'Transaksi berhasil dihapus!');
     }
-
 }

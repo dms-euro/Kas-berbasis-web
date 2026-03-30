@@ -15,34 +15,66 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/auth.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @include('layouts.style')
 </head>
 
 <body>
     @include('layouts.sidebar', ['active' => $active ?? ''])
 
-        <div id="main">
+    <div id="main">
         @yield('content')
-    <footer>
-        <div class="footer clearfix mb-0 text-muted">
-            <div class="float-start">
+        <footer>
+            <div class="footer clearfix mb-0 text-muted">
+                <div class="float-start">
+                </div>
+                <div class="float-end">
+                    <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
+                            href="https://github.com/dms-euro">Uroo</a></p>
+                </div>
             </div>
-            <div class="float-end">
-                <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                        href="https://github.com/dms-euro">Uroo</a></p>
-            </div>
-        </div>
-    </footer>
-    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+        </footer>
+        <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
-    <script src="{{ asset('assets/vendors/apexcharts/apexcharts.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
+        <script src="{{ asset('assets/vendors/apexcharts/apexcharts.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
 
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-    </div>
+        <script src="{{ asset('assets/js/main.js') }}"></script>
+        <script>
+            function confirmDelete(userId) {
+                Swal.fire({
+                    title: 'Yakin hapus user ini?',
+                    text: "Data yang sudah dihapus tidak bisa dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-form-' + userId).submit();
+                    }
+                })
+            }
+        </script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
+</div>
 </body>
+
 </html>

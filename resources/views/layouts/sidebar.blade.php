@@ -17,20 +17,19 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-
-            <li class="sidebar-item  has-sub ">
+            <li class="sidebar-item has-sub {{ in_array($active, ['kas', 'transaksi']) ? 'open' : '' }}">
                 <a href="#" class='sidebar-link'>
                     <i class='iconly-boldWallet'></i>
                     <span>Keuangan</span>
                 </a>
-                <ul class="submenu ">
-                    <li class="submenu-item {{ $active == 'kas' ? 'active' : '' }} ">
+                <ul class="submenu {{ in_array($active, ['kas', 'transaksi']) ? 'active' : '' }}">
+                    <li class="submenu-item {{ $active == 'kas' ? 'active' : '' }}">
                         <a href="{{ route('kas.index') }}" class="sidebar-link">
                             <i class="iconly-boldSwap"></i>
                             <span>Rekap Kas</span>
                         </a>
                     </li>
-                    <li class="submenu-item {{ $active == 'transaksi' ? 'active' : '' }}  ">
+                    <li class="submenu-item {{ $active == 'transaksi' ? 'active' : '' }}">
                         <a href="{{ route('keuangan.index') }}" class="sidebar-link">
                             <i class="iconly-boldActivity"></i>
                             <span>Transaksi</span>

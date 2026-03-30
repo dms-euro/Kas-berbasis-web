@@ -18,14 +18,13 @@ class LoginController extends Controller
     public function create()
     {
         $users = User::all();
-
         return view('auth.anggota', compact('users'));
     }
 
     public function logout()
     {
         Auth::logout();
-        return view('auth.login');
+        return view('auth.login')->with('success', 'Logout Berhasil!');
     }
 
     public function tambahuser(Request $request)
@@ -56,9 +55,9 @@ class LoginController extends Controller
 
         if (Auth::attempt($cek)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard.index');
+            return redirect()->route('dashboard.index')->with('success', 'Login Berhasil!');
         }
-        return redirect()->back();
+        return redirect()->back()->withErrors(['username' => 'Login Gagal!'])->onlyInput('username');
     }
 
     public function show(string $id)

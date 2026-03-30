@@ -100,10 +100,14 @@
         <h3 class="section-title">Daftar Transaksi</h3>
     </div>
     <div class="card dashboard-card mb-3">
-        <div class="d-flex justify-content-end m-3">
+        <div class="d-flex justify-content-end m-3 gap-2">
+            {{-- tombol export pdf --}}
+            <a href="{{ route('keuangan.export.pdf') }}" class="btn btn-danger">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Export PDF
+            </a>
             @if (auth()->user()->level === 'admin')
                 <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#transaksiModal">
-                    <i class="fas fa-plus-circle me-1"></i> Tambah Transaksi
+                    <i class="bi bi-plus-circle me-1"></i> Tambah
                 </button>
             @endif
         </div>

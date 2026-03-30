@@ -50,12 +50,13 @@
                                     </td>
                                     @if (auth()->user()->level === 'admin')
                                         <td>
-                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                            <form id="delete-form-{{ $user->id }}"
+                                                action="{{ route('user.destroy', $user->id) }}" method="POST"
                                                 style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger btn-sm"
-                                                    onclick="return confirm('Yakin hapus user ini?')">
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    onclick="confirmDelete({{ $user->id }})">
                                                     <i class="iconly-boldDelete"></i> Hapus
                                                 </button>
                                             </form>
